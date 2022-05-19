@@ -30,7 +30,7 @@ from datasets import load_dataset, load_metric
 
 import transformers
 from transformers import (
-    MT5ForConditionalGeneration, T5Tokenizer, MT5Config,
+    MT5ForConditionalGeneration, T5Tokenizer, MT5Config
     DataCollatorForSeq2Seq,
     HfArgumentParser,
     Seq2SeqTrainer,
@@ -285,7 +285,7 @@ def main():
         raw_datasets = load_dataset('csv', data_files=data_files, delimiter = '\t', cache_dir=model_args.cache_dir, column_names=[data_args.source_lang, data_args.target_lang])
 
     # Set up config and tokenizer from open source model.
-    model = MT5ForConditionalGeneration.from_pretrained("google/mt5-small")
+    model = MT5ForConditionalGeneration("google/mt5-small")
     tokenizer = T5Tokenizer.from_pretrained("google/mt5-small")
     model.resize_token_embeddings(len(tokenizer))
 

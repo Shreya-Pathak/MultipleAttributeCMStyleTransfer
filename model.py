@@ -12,6 +12,8 @@ from torch import nn
 import warnings
 from torch.nn import CrossEntropyLoss
 
+torch.manual_seed(0)
+
 __HEAD_MASK_WARNING_MSG = """
 The input argument `head_mask` was split into two arguments `head_mask` and `decoder_head_mask`. Currently,
 `decoder_head_mask` is set to copy `head_mask`, but this feature is deprecated and will be removed in future versions.
@@ -21,9 +23,10 @@ num_heads)`.
 
 '''In this instantiation, MT5ForStyleConditionalGeneration has the same model parameters and forward pass as the mT5 model'''
 class MT5ForStyleConditionalGeneration(MT5ForConditionalGeneration):
-    def __init__(self, config):
+    def __init__(self, config, cmi_style_vector=None):
         super().__init__(config)
         self.cmi_style_vector = nn.Parameter(torch.rand(config.d_model))
+
        
     def forward(
         self,

@@ -2,6 +2,7 @@
 
 import sys
 import numpy as np
+np.random.seed(0)
 
 def cmi(t):
     word_list = t.split()
@@ -17,7 +18,6 @@ def cmi(t):
 
 fn1 = sys.argv[1]
 fn2 = sys.argv[2]
-mode = sys.argv[3]
 
 of = open(fn2, 'w')
 
@@ -26,14 +26,10 @@ with open(fn1, 'r') as f:
     for l in f:
         l = l.strip()
         src, tgt = l.split('\t')[:2]
+        r = np.random.rand()
         val = 0
-        if mode=="dev":
-            r = np.random.rand()
-            if r>0.2:
-                val = 0.1+cmi(tgt)
-                val = round(val, 3)
-            else: zeros+=1
-        elif mode=="oracle":
+        if r>0.2:
             val = 0.1+cmi(tgt)
             val = round(val, 3)
+        else: zeros+=1
         of.write(src+'\t'+tgt+'\t'+str(val)+'\n')
