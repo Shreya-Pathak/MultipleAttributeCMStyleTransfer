@@ -1,8 +1,9 @@
 #!/bin/bash
 
-for train_set_size in 5 10 15 20
+for train_set_size in 10 20 30 40 50 60 70 80 90 100
 do
-	echo "Running for train set size : ${train_set_size}"
+	train_samples=$((train_set_size*22982/100))
+	echo "Running for train set size : ${train_samples}"
 	python main.py \
 	--do_train --do_eval --do_predict \
 	--source_lang='en' --target_lang='cm' \
@@ -13,13 +14,13 @@ do
 	--gradient_accumulation_steps=2 \
 	--overwrite_output_dir=False \
 	--predict_with_generate \
-	--train_file="./data/few_shot_training/fewshot_${train_set_size}_percent.tsv" \
+	--train_file="./data/cmi_control_train_vector.tsv" \
 	--validation_file='./data/cmi_control_dev_vector.tsv' \
 	--test_file='./data/cmi_control_test_vector_oracle.tsv' \
 	--num_train_epochs=10.0 \
 	--learning_rate=5e-4 \
-	--eval_steps=50 \
-	--save_steps=50 \
+	--eval_steps=100 \
+	--save_steps=100 \
 	--evaluation_strategy='steps' \
 	--save_strategy='steps' \
 	--lr_scheduler_type='constant' \
@@ -30,5 +31,6 @@ do
 	--max_target_length=128 \
 	--load_best_model_at_end \
 	--metric_for_best_model='cmi_acc_bleu_hm' \
-	--save_total_limit=1
+	--save_total_limit=1 \
+	--max_train_samples=${train_samples}
 done
