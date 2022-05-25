@@ -264,14 +264,13 @@ def main():
 
 	logger.info("Freeze everything except last 2 decoder layers")
 	for name, param in model.named_parameters():
-		if name.startswith("decoder.block.6") or \
-			name.startswith("decoder.block.7") or \
-			name=="decoder.final_layer_norm.weight" or \
+		if name.startswith("decoder") or \
+			name=="cmi_style_vector" or \
 			name.startswith("lm"):
 			pass
 		else:
 			param.requires_grad = False
-	logger.info("All except last 2 decoder weights are frozen.")
+	logger.info("All except decoder weights are frozen.")
 
 	# Set decoder_start_token_id
 	if model.config.decoder_start_token_id is None:
