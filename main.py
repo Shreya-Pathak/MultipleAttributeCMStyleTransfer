@@ -34,6 +34,7 @@ from transformers import (
 	Seq2SeqTrainer,
 	Seq2SeqTrainingArguments,
 	set_seed,
+	EarlyStoppingCallback
 )
 from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version
@@ -315,6 +316,7 @@ def main():
 		tokenizer=tokenizer,
 		data_collator=data_collator,
 		compute_metrics=lambda x:mt.compute_metrics(x, tokenizer, data_args) if training_args.predict_with_generate else None,
+		callbacks = [EarlyStoppingCallback(early_stopping_patience=3)]
 	)
 
 	# Training
