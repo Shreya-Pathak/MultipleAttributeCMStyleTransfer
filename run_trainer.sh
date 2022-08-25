@@ -3,11 +3,13 @@
 for train_set_size in 50 60 70 80 90 100
 do
   train_samples=$((train_set_size*21422/100))
+  output_dir="models/mt5_cmi_vec/train_${train_set_size}"
   echo "Running for train set size : ${train_samples}"
+  echo "Output dir : ${output_dir}"
   python main_trainer.py \
   --do_train --do_eval --do_predict \
   --source_lang='en' --target_lang='cm' \
-  --output_dir='models/mt5_cmi_vec/train_${train_set_size}' \
+  --output_dir=${output_dir} \
   --per_device_train_batch_size=16 \
   --per_device_eval_batch_size=16 \
   --gradient_accumulation_steps=2 \
