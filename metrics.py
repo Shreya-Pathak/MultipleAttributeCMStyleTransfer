@@ -47,8 +47,9 @@ def compute_metrics(eval_preds, tokenizer, data_args):
     decoded_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
 
     # Some simple post-processing
-    decoded_preds, decoded_labels = postprocess_text(decoded_preds, decoded_labels)
-
+    decoded_preds_raw, decoded_labels = postprocess_text(decoded_preds, decoded_labels)
+	decoded_preds = decoded_preds_raw.split('|||')[1].strip()
+	
     result = bleu(decoded_labels, decoded_preds)
 #    result = metric.compute(predictions=decoded_preds, references=decoded_labels)
     result = {"bleu": result["bleu"]}
