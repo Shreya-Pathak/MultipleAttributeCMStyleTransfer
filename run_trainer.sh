@@ -1,33 +1,38 @@
 #!/bin/bash
 
-for
-python main_trainer.py \
---do_train --do_eval --do_predict \
---source_lang='en' --target_lang='cm' \
---output_dir='models/mt5_spi_vec' \
---per_device_train_batch_size=16 \
---per_device_eval_batch_size=16 \
---gradient_accumulation_steps=2 \
---overwrite_output_dir=False \
---predict_with_generate \
---train_file='data/spi_vector/hi_cm_train.tsv' \
---validation_file='data/spi_vector/hi_cm_valid.tsv' \
---test_file='data/spi_vector/hi_cm_test.tsv' \
---load_best_model_at_end \
---metric_for_best_model='spi_bleu_hm' \
---num_train_epochs=20.0 \
---learning_rate=5e-4 \
---eval_steps=1000 \
---save_steps=1000 \
---evaluation_strategy='steps' \
---save_strategy='steps' \
---lr_scheduler_type='constant' \
---generation_num_beams=1 \
---generation_max_length=128 \
---optim='adafactor' \
---max_source_length=128 \
---max_target_length=128 \
---save_total_limit=1
+for train_set_size in 50 60 70 80 90 100
+do
+  train_samples=$((train_set_size*21422/100))
+  echo "Running for train set size : ${train_samples}"
+  python main_trainer.py \
+  --do_train --do_eval --do_predict \
+  --source_lang='en' --target_lang='cm' \
+  --output_dir='models/mt5_cmi_vec/train_${train_set_size}' \
+  --per_device_train_batch_size=16 \
+  --per_device_eval_batch_size=16 \
+  --gradient_accumulation_steps=2 \
+  --overwrite_output_dir=False \
+  --predict_with_generate \
+  --train_file='data/cmi_vector/hi_cm_train.tsv' \
+  --validation_file='data/cmi_vector/hi_cm_valid.tsv' \
+  --test_file='data/cmi_vector/hi_cm_test.tsv' \
+  --load_best_model_at_end \
+  --metric_for_best_model='cmi_bleu_hm' \
+  --num_train_epochs=20.0 \
+  --learning_rate=5e-4 \
+  --eval_steps=200 \
+  --save_steps=200 \
+  --evaluation_strategy='steps' \
+  --save_strategy='steps' \
+  --lr_scheduler_type='constant' \
+  --generation_num_beams=1 \
+  --generation_max_length=128 \
+  --optim='adafactor' \
+  --max_source_length=128 \
+  --max_target_length=128 \
+  --save_total_limit=1 \
+  --max_train_samples=${train_samples}
+done
 
 #### cpi, spi 
 
