@@ -1,5 +1,6 @@
 #!/bin/bash
 
+for
 python main_trainer.py \
 --do_train --do_eval --do_predict \
 --source_lang='en' --target_lang='cm' \
