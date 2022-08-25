@@ -195,7 +195,7 @@ class DataTrainingArguments:
         },
     )
     cmi_cutoffs_dict: str = field(
-        default="./cmi_cutoffs_dict.pkl",
+        default="./data/cmi_cutoffs_dict.pkl",
         metadata={
             "help": "CMI cutoff dict"
         },
